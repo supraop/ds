@@ -1,0 +1,142 @@
+"Adhi he sagla karun ghya"
+Step 1. Download jar file ===> click on jar(4.0mb) by visiting link https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-core/1.2.1 
+Step 2. move the jar file to your folder on desktop
+Step 3. Download Hadoop ===> select  hadoop-3.3.5-aarch64.tar.gz  from visiting the link ---> https://dlcdn.apache.org/hadoop/common/hadoop-3.3.5/
+step 4. extract the hadoop tar.gz file into your folder on desktop
+
+
+cd Desktop
+mkdir akade
+cd akade
+gedit WordCount.java
+
+
+******
+program khalti dilay.......Tevdhe khali baghyche kasht ghya
+******
+gedit input1.txt
+ls
+ls -la
+hadoop
+ls -la
+javac -classpath hadoop-core-1.2.1.jar WordCount.java
+echo $JAVA_HOME
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+
+****
+varchi command ni error dila tr tumchya pc mdhe java openjdk cha path copy kra ani toch ithe paste kara.... ani hat jodun export chya pudhe $ vapru naka.
+java cha path shodhaycha kasa te baghych asel tr khali aai ghalavi----khali dakhvlay ks krych.
+*****
+
+
+echo $JAVA_HOME
+ls -la
+jar -cvf wc.jar -c words/ .
+hadoop-3.3.5/bin/hadoop fs -mkdir input
+hadoop-3.3.5/bin/hadoop fs -put input1.txt input
+ls
+hadoop-3.3.5/bin/hadoop fs -ls input
+hadoop-3.3.5/bin/hadoop jar wc.jar WordCount input/input1.txt output
+hadoop-3.3.5/bin/hadoop fs -ls output
+hadoop-3.3.5/bin/hadoop fs -cat output/part-r-00000
+
+
+
+
+-----------------------------------------------------------------------------------------------
+how to find java path===>
+cd $home
+cd .. 
+cd .. 
+cd usr
+cd lib
+cd jvm
+pwd (copy path to current directory)
+copy file name (open jdk)
+path+file_name 
+----------------------------------------------------------------------------------------------
+
+
+
+
+
+
+Create Input file====> Input1.txt (kahihi liha ya file mdhe)
+Solapur
+Sangli
+Satara
+Satara
+Sangli
+Nashik
+Nashik
+Pune
+Mumbai
+Nagpur
+
+
+
+
+
+Program==> 
+Save as WordCount.java kara re yedgandyanno.......nit nav baghun save kra
+import java.io.IOException;
+import java.util.StringTokenizer;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+
+public class WordCount {
+
+  public static class TokenizerMapper
+       extends Mapper<Object, Text, Text, IntWritable>{
+
+    private final static IntWritable one = new IntWritable(1);
+    private Text word = new Text();
+
+    public void map(Object key, Text value, Context context
+                    ) throws IOException, InterruptedException {
+      StringTokenizer itr = new StringTokenizer(value.toString());
+      while (itr.hasMoreTokens()) {
+        word.set(itr.nextToken());
+        context.write(word, one);
+
+      }
+    }
+  }
+
+  public static class IntSumReducer
+       extends Reducer<Text,IntWritable,Text,IntWritable> {
+    private IntWritable result = new IntWritable();
+
+    public void reduce(Text key, Iterable<IntWritable> values,
+                       Context context
+                       ) throws IOException, InterruptedException {
+      int sum = 0;
+      for (IntWritable val : values) {
+        sum += val.get();
+      }
+      result.set(sum);
+      context.write(key, result);
+    }
+  }
+
+  public static void main(String[] args) throws Exception {
+    Configuration conf = new Configuration();
+    Job job = Job.getInstance(conf, "word count");
+    job.setJarByClass(WordCount.class);
+    job.setMapperClass(TokenizerMapper.class);
+    job.setCombinerClass(IntSumReducer.class);
+    job.setReducerClass(IntSumReducer.class);
+    job.setOutputKeyClass(Text.class);
+    job.setOutputValueClass(IntWritable.class);
+    FileInputFormat.addInputPath(job, new Path(args[0]));
+    FileOutputFormat.setOutputPath(job, new Path(args[1]));
+    System.exit(job.waitForCompletion(true) ? 0 : 1);
+  }
+}

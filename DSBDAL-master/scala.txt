@@ -1,0 +1,53 @@
+#installation
+snap find "intellij"
+sudo snap install intellij-idea-community --classic
+
+object sample{
+  def main(args: Array[String]): Unit = {
+    println("hello world")
+    val n1 = 10
+    val n2 = 59
+    val sum = n1+n2
+    println("the sum of numbers is " + sum)
+  }
+}
+
+
+
+
+#temp converter
+object temp {
+  def celsiusToFahrenheit(celsius: Double): Double = {
+    (celsius * 9 / 5) + 32
+  }
+
+  def fahrenheitToCelsius(fahrenheit: Double): Double = {
+    (fahrenheit - 32) * 5 / 9
+  }
+
+  def main(args: Array[String]): Unit = {
+    println("Temperature Converter")
+    println("1. Celsius to Fahrenheit")
+    println("2. Fahrenheit to Celsius")
+    println("Enter your choice (1 or 2):")
+
+    val choice = scala.io.StdIn.readInt()
+
+    choice match {
+      case 1 =>
+        println("Enter temperature in Celsius:")
+        val celsius = scala.io.StdIn.readDouble()
+        val fahrenheit = celsiusToFahrenheit(celsius)
+        println(s"$celsius°C = $fahrenheit°F")
+
+      case 2 =>
+        println("Enter temperature in Fahrenheit:")
+        val fahrenheit = scala.io.StdIn.readDouble()
+        val celsius = fahrenheitToCelsius(fahrenheit)
+        println(s"$fahrenheit°F = $celsius°C")
+
+      case _ =>
+        println("Invalid choice!")
+    }
+  }
+}
