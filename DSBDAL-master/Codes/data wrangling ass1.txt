@@ -1,0 +1,61 @@
+import pandas as pd
+import numpy as np
+
+dataset=pd.read_csv("iris.csv")
+
+dataset
+
+dataset.head()
+
+dataset.tail()
+
+dataset.columns
+
+dataset.shape
+
+dataset.dtypes
+
+dataset.columns.values
+
+dataset.describe(include='all')
+
+#transpose
+dataset.T
+
+dataset.isnull()
+
+# only want to know if there are any missing values
+dataset.isnull().values.any()
+
+# knowling number of non-missing values for each variable
+dataset.notnull().sum()
+
+dataset[0:3]
+
+# Selection by label
+dataset.loc[:, ["SepalLengthCm", "SepalWidthCm"]]
+
+# Data Normalization-- Range Selection
+dataset[['SepalLengthCm','PetalLengthCm']]
+
+# Get Coloumn Name
+cols_2_4=dataset.columns[2:4]
+
+# Then get data from Columns
+dataset[cols_2_4]
+
+dataset.describe(percentiles=None, include=None, exclude=None)
+
+# filling missing value using fillna()
+# Filling null values with a single value
+dataset.fillna(0)
+
+#calculate median
+dataset.median()
+
+# write mode values across rows and cloumn
+dataset.mode(axis=0)
+
+dataset['Species'].replace(['Iris-setosa', 'Iris-versicolor', 'Iris-virginica',], [1, 2, 3], inplace= True)
+
+dataset

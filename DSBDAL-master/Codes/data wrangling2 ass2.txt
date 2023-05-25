@@ -1,0 +1,55 @@
+import pandas as pd
+import numpy as np
+
+df = pd.read_csv("students.csv")
+df.head()
+
+df.dtypes
+
+df['Roll Number'] = df['Roll Number'].astype(float).astype("Int64")
+df.dtypes
+
+df.head(100)
+
+df['CGPA']
+
+df['CGPA'].min()
+
+df['CGPA'].max()
+
+df['CGPA'].plot(kind='box')
+
+df['CGPA'].plot(kind='hist')
+
+df.head(100)
+
+print('Total Rows with missing attendance : ',format(df['Attendance'].head(100).isna().sum()))
+indices_attendance = []
+for index, row in df.iterrows():
+     if(pd.isnull(row['Attendance'])):
+         indices_attendance.append(index)  
+print('Indices : ',indices_attendance)
+
+
+att_mean = df['Attendance'].mean()
+df['Attendance'].fillna(att_mean, inplace= True)
+df['Attendance'] = df['Attendance'].round(1)
+
+df.head(100)
+
+print('Total Rows with missing roll numbers : ',format(df['Roll Number'].head(100).isna().sum()))
+indices_rollN = []
+for index, row in df.iterrows():
+     if(pd.isnull(row['Roll Number'])):
+            indices_rollNrollN.append(index)  
+print('Indices : ',indices_rollN) 
+
+df.head(100)  
+
+
+from sklearn.preprocessing import MinMaxScaler
+
+scaler = MinMaxScaler(feature_range=(0,10))
+df[['CGPA']] = scaler.fit_transform(df[['CGPA']])
+df['CGPA'] = df['CGPA'].round(1)
+df.head(100)
