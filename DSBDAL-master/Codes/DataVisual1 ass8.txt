@@ -1,0 +1,32 @@
+import numpy as np
+import pandas as pd
+df=pd.read_csv("titanic.csv")
+df
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df.head()
+df.describe()
+df.info()
+
+sns.set_style('whitegrid')
+sns.countplot(x='Survived', data = df, hue='Sex')
+sns.countplot(x='Survived', data = df, hue='Pclass')
+sns.distplot(df['Age'].dropna(), kde= False, bins = 30)
+sns.jointplot(x=df['Age'],y=df['Fare'],kind='hex')
+sns.jointplot(x = df['Age'], y = df['Fare'], kind = 'hex')
+sns.rugplot(df['Age'])
+sns.barplot(x='Sex', y='Age', data=df)
+sns.barplot(x='Sex', y='Age', data=df, estimator=np.std)
+sns.countplot(x='Sex', data=df)
+sns.boxplot(x='Sex', y='Age', data=df)
+sns.boxplot(x='Sex', y='Age', data=df, hue='Parch')
+sns.violinplot(x='Sex', y='Age', data=df)
+sns.violinplot(x='Sex', y='Age', data=df, hue='Parch')
+sns.stripplot(x='Sex', y='Age', data=df, jitter=False)
+sns.stripplot(x='Sex', y='Age', data=df, jitter=True)
+
+sns.swarmplot(x='Sex', y='Age', data=df)
+sns.swarmplot(x='Sex', y='Age', data=df, hue='Parch')
+
+df['Fare'].hist(bins=50,figsize=(10,4))

@@ -1,0 +1,65 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("Social_Network_Ads.csv")
+
+df
+
+plt.scatter(df.EstimatedSalary,df.Purchased,marker= '+',color='red')
+
+x = df[['Age','EstimatedSalary']]
+
+y = df['Purchased']
+
+from sklearn.model_selection import train_test_split
+
+xtrain, xtest, ytrain, ytest = train_test_split(x, y, test_size = 0.1,random_state = 0)
+
+from sklearn.preprocessing import StandardScaler
+
+sc_x = StandardScaler()
+xtrain = sc_x.fit_transform(xtrain)
+xtest = sc_x.transform(xtest)
+print (xtrain[0:10, :])
+
+len(xtrain)
+
+len(xtest)
+
+xtrain
+
+xtest
+
+from sklearn.linear_model import LogisticRegression
+classifier = LogisticRegression()
+
+classifier.fit(xtrain,ytrain)
+
+y_pred = classifier.predict(xtest)
+print(y)
+print(y_pred)
+
+from sklearn.metrics import confusion_matrix,accuracy_score
+cm1 = confusion_matrix(ytest,y_pred)
+print('Confusion Matrix: ')
+print(cm1)   
+
+ac1 = accuracy_score(ytest, y_pred)*100
+print('Accuracy Score:')
+print(ac1)
+
+tp=cm1[0][0]
+tn=cm1[1][1]
+fp=cm1[1][0]
+fn=cm1[0][1]
+total=tp+tn+fp+fn
+
+error_rate=(fp+fn)/(total)
+print('error rate: ')
+print(error_rate)
+
+ from sklearn.metrics import classification_report
+print('                        classification report:')
+print('')
+print(classification_report(ytest,y_pred))

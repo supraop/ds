@@ -1,0 +1,32 @@
+import pandas as pd
+import numpy as np
+import seaborn as sns
+
+df = pd.read_csv("Iris.csv")
+
+df.head()
+
+df.tail()
+
+df.dtypes
+
+df['SepalLengthCm']
+
+df['SepalLengthCm'].min()
+
+df['Species'].unique()
+
+group=df.groupby('Species')
+
+iris_setosa=group.get_group('Iris-setosa')
+iris_setosa
+
+iris_setosa.describe()
+
+iris_versicolor=group.get_group('Iris-versicolor')
+iris_versicolor
+iris_versicolor.describe()
+
+iris_virginica=group.get_group('Iris-virginica')
+iris_virginica
+iris_virginica.describe()
